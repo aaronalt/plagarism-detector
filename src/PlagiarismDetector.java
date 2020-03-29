@@ -57,7 +57,7 @@ public class PlagiarismDetector {
 	 */
 	protected static List<String> readFile(String filename) {
 		if (filename == null) return null;
-		
+
 		List<String> words = new LinkedList<String>();
 		
 		try {
