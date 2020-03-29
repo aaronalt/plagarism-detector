@@ -87,12 +87,12 @@ public class PlagiarismDetector {
 		Set<String> phrases = new HashSet<String>();
 		
 		for (int i = 0; i < words.size() - window + 1; i++) {
-			String phrase = "";
+			StringBuilder phrase = new StringBuilder();
 			for (int j = 0; j < window; j++) {
-				phrase += words.get(i+j) + " ";
+				phrase.append(words.get(i + j)).append(" ");
 			}
 
-			phrases.add(phrase);
+			phrases.add(phrase.toString());
 
 		}
 		
