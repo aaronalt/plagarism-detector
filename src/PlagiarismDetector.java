@@ -44,7 +44,7 @@ public class PlagiarismDetector {
 								
 				if (matches.size() > threshold) {
 					String key = file1 + "-" + file2;
-					if (numberOfMatches.containsKey(file2 + "-" + file1) == false && file1.equals(file2) == false) {
+					if (!numberOfMatches.containsKey(file2 + "-" + file1) && !file1.equals(file2)) {
 						numberOfMatches.put(key,matches.size());
 					}
 				}				
