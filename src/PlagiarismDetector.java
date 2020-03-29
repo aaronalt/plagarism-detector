@@ -26,12 +26,8 @@ public class PlagiarismDetector {
 		Map<String, Integer> numberOfMatches = new HashMap<String, Integer>();
 
 		assert files != null;
-		for (int i = 0; i < files.length; i++) {
-			String file1 = files[i];
-
-			for (int j = 0; j < files.length; j++) {
-				String file2 = files[j];
-
+		for (String file1 : files) {
+			for (String file2 : files) {
 				Set<String> file1Phrases = createPhrases(dirName + "/" + file1, windowSize);
 				Set<String> file2Phrases = createPhrases(dirName + "/" + file2, windowSize);
 
@@ -40,13 +36,10 @@ public class PlagiarismDetector {
 
 				Set<String> matches = findMatches(file1Phrases, file2Phrases);
 
-				if (matches == null)
-					return null;
-
 				if (matches.size() > threshold) {
 					String key = file1 + "-" + file2;
 					if (!numberOfMatches.containsKey(file2 + "-" + file1) && !file1.equals(file2)) {
-						numberOfMatches.put(key,matches.size());
+						numberOfMatches.put(key, matches.size());
 					}
 				}
 			}
