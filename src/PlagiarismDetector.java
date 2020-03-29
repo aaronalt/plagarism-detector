@@ -24,32 +24,33 @@ public class PlagiarismDetector {
 		String[] files = dirFile.list();
 		
 		Map<String, Integer> numberOfMatches = new HashMap<String, Integer>();
-		
+
+		assert files != null;
 		for (int i = 0; i < files.length; i++) {
 			String file1 = files[i];
 
-			for (int j = 0; j < files.length; j++) { 
+			for (int j = 0; j < files.length; j++) {
 				String file2 = files[j];
-				
-				Set<String> file1Phrases = createPhrases(dirName + "/" + file1, windowSize); 
-				Set<String> file2Phrases = createPhrases(dirName + "/" + file2, windowSize); 
-				
+
+				Set<String> file1Phrases = createPhrases(dirName + "/" + file1, windowSize);
+				Set<String> file2Phrases = createPhrases(dirName + "/" + file2, windowSize);
+
 				if (file1Phrases == null || file2Phrases == null)
 					return null;
-				
+
 				Set<String> matches = findMatches(file1Phrases, file2Phrases);
-				
+
 				if (matches == null)
 					return null;
-								
+
 				if (matches.size() > threshold) {
 					String key = file1 + "-" + file2;
 					if (!numberOfMatches.containsKey(file2 + "-" + file1) && !file1.equals(file2)) {
 						numberOfMatches.put(key,matches.size());
 					}
-				}				
+				}
 			}
-			
+
 		}		
 		
 		return sortResults(numberOfMatches);
