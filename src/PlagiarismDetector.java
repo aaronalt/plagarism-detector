@@ -22,7 +22,7 @@ public class PlagiarismDetector {
 	public static Map<String, Integer> detectPlagiarism(String dirName, int windowSize, int threshold) {
 		File dirFile = new File(dirName);
 		String[] files = dirFile.list();
-		
+
 		Map<String, Integer> numberOfMatches = new HashMap<String, Integer>();
 
 		assert files != null;
@@ -44,22 +44,20 @@ public class PlagiarismDetector {
 				}
 			}
 
-		}		
-		
+		}
+
 		return sortResults(numberOfMatches);
 
 	}
 
-	
+
 	/*
 	 * This method reads the given file and then converts it into a Collection of Strings.
 	 * It does not include punctuation and converts all words in the file to uppercase.
 	 */
 	protected static List<String> readFile(String filename) {
-		if (filename == null) return null;
-
 		List<String> words = new LinkedList<String>();
-		
+
 		try {
 			Scanner in = new Scanner(new File(filename));
 			while (in.hasNext()) {
@@ -70,22 +68,22 @@ public class PlagiarismDetector {
 			e.printStackTrace();
 			return null;
 		}
-		
+
 		return words;
 	}
 
-	
+
 	/*
 	 * This method reads a file and converts it into a Set/List of distinct phrases,
 	 * each of size "window". The Strings in each phrase are whitespace-separated.
 	 */
 	protected static Set<String> createPhrases(String filename, int window) {
 		if (filename == null || window < 1) return null;
-				
+
 		List<String> words = readFile(filename);
-		
+
 		Set<String> phrases = new HashSet<String>();
-		
+
 		for (int i = 0; i < words.size() - window + 1; i++) {
 			StringBuilder phrase = new StringBuilder();
 			for (int j = 0; j < window; j++) {
@@ -95,23 +93,23 @@ public class PlagiarismDetector {
 			phrases.add(phrase.toString());
 
 		}
-		
-		return phrases;		
+
+		return phrases;
 	}
 
-	
 
-	
+
+
 	/*
 	 * Returns a Set of Strings that occur in both of the Set parameters.
 	 * However, the comparison is case-insensitive.
 	 */
 	protected static Set<String> findMatches(Set<String> myPhrases, Set<String> yourPhrases) {
-	
+
 		Set<String> matches = new HashSet<String>();
-		
+
 		if (myPhrases != null && yourPhrases != null) {
-		
+
 			for (String mine : myPhrases) {
 				for (String yours : yourPhrases) {
 					if (mine.equalsIgnoreCase(yours)) {
@@ -122,21 +120,21 @@ public class PlagiarismDetector {
 		}
 		return matches;
 	}
-	
+
 	/*
 	 * Returns a LinkedHashMap in which the elements of the Map parameter
 	 * are sorted according to the value of the Integer, in non-ascending order.
 	 */
 	protected static LinkedHashMap<String, Integer> sortResults(Map<String, Integer> possibleMatches) {
-		
+
 		// Because this approach modifies the Map as a side effect of printing 
 		// the results, it is necessary to make a copy of the original Map
 		Map<String, Integer> copy = new HashMap<String, Integer>();
 
 		for (String key : possibleMatches.keySet()) {
 			copy.put(key, possibleMatches.get(key));
-		}	
-		
+		}
+
 		LinkedHashMap<String, Integer> list = new LinkedHashMap<String, Integer>();
 
 		for (int i = 0; i < copy.size(); i++) {
@@ -148,34 +146,34 @@ public class PlagiarismDetector {
 					maxKey = key;
 				}
 			}
-			
+
 			list.put(maxKey, maxValue);
-			
+
 			copy.put(maxKey, -1);
 		}
 
 		return list;
 	}
-	
+
 	/*
 	 * This method is here to help you measure the execution time and get the output of the program.
 	 * You do not need to consider it for improving the efficiency of the detectPlagiarism method.
 	 */
-    public static void main(String[] args) {
-    	if (args.length == 0) {
-    		System.out.println("Please specify the name of the directory containing the corpus.");
-    		System.exit(0);
-    	}
-    	String directory = args[0];
-    	long start = System.currentTimeMillis();
-    	Map<String, Integer> map = PlagiarismDetector.detectPlagiarism(directory, 4, 5);
-    	long end = System.currentTimeMillis();
-    	double timeInSeconds = (end - start) / (double)1000;
-    	System.out.println("Execution time (wall clock): " + timeInSeconds + " seconds");
-    	Set<Map.Entry<String, Integer>> entries = map.entrySet();
-    	for (Map.Entry<String, Integer> entry : entries) {
-    		System.out.println(entry.getKey() + ": " + entry.getValue());
-    	}
-    }
+	public static void main(String[] args) {
+		if (args.length == 0) {
+			System.out.println("Please specify the name of the directory containing the corpus.");
+			System.exit(0);
+		}
+		String directory = args[0];
+		long start = System.currentTimeMillis();
+		Map<String, Integer> map = PlagiarismDetector.detectPlagiarism(directory, 4, 5);
+		long end = System.currentTimeMillis();
+		double timeInSeconds = (end - start) / (double)1000;
+		System.out.println("Execution time (wall clock): " + timeInSeconds + " seconds");
+		Set<Map.Entry<String, Integer>> entries = map.entrySet();
+		for (Map.Entry<String, Integer> entry : entries) {
+			System.out.println(entry.getKey() + ": " + entry.getValue());
+		}
+	}
 
 }
